@@ -28,6 +28,8 @@
 	import PinSlashIcon from './icons/PinSlash.svelte';
 	import Settings from '$lib/components/icons/Settings.svelte';
 	import KeyIcon from './icons/Key.svelte';
+	import LinkIcon from '$lib/components/icons/Link.svelte';
+	import { withBase } from '$lib/utils/basePath';
 	import UserIcon from './icons/User.svelte';
 	import WorkspaceIcon from './icons/Workspace.svelte';
 	import XMarkIcon from './icons/XMark.svelte';
@@ -530,6 +532,30 @@
 					</div>
 					<div class=" self-center truncate">{$i18n.t('Keyboard')}</div>
 				</button>
+			{/if}
+
+			{#if ($config?.user_menu_links ?? []).length > 0}
+				<hr class="border-gray-50/30 dark:border-gray-800/30 my-0.5 mx-1 p-0" />
+
+				<!-- WEBUI_USER_MENU_LINKS: pages outside the app, so always a full page load -->
+				{#each $config.user_menu_links as link}
+					<a
+						href={withBase(link.url)}
+						target={link.new_tab ? '_blank' : undefined}
+						rel={link.new_tab ? 'noopener' : undefined}
+						data-sveltekit-reload
+						draggable="false"
+						class="flex h-[1.6875rem] items-center gap-2 rounded-xl px-2 text-[0.8125rem] w-full hover:bg-gray-50/60 dark:hover:bg-gray-800/60 transition cursor-pointer select-none"
+						on:click={() => {
+							show = false;
+						}}
+					>
+						<div class="self-center">
+							<LinkIcon className="size-3.5" />
+						</div>
+						<div class=" self-center truncate">{link.name}</div>
+					</a>
+				{/each}
 			{/if}
 
 			<hr class="border-gray-50/30 dark:border-gray-800/30 my-0.5 mx-1 p-0" />

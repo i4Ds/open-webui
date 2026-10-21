@@ -955,6 +955,26 @@ if LICENSE_PUBLIC_KEY:
 WEBUI_BASE_PATH = os.getenv('WEBUI_BASE_PATH', '').strip().strip('/')
 WEBUI_BASE_PATH = f'/{WEBUI_BASE_PATH}' if WEBUI_BASE_PATH else ''
 
+# Extra entries in the user menu, e.g. a page next to the UI on the same host:
+#   WEBUI_USER_MENU_LINKS='[{"name": "API key", "url": "/keys/", "new_tab": true}]'
+# Root-relative URLs get WEBUI_BASE_PATH; links always load as a full page.
+def _parse_user_menu_links(value: str) -> list[dict]:
+    try:
+        items = json.loads(value) if value.strip() else []
+    except json.JSONDecodeError:
+        log.warning('WEBUI_USER_MENU_LINKS is not valid JSON, ignoring it')
+        return []
+    if not isinstance(items, list):
+        return []
+    return [
+        {'name': i['name'], 'url': i['url'], 'new_tab': bool(i.get('new_tab', False))}
+        for i in items
+        if isinstance(i, dict) and isinstance(i.get('name'), str) and isinstance(i.get('url'), str)
+    ]
+
+
+WEBUI_USER_MENU_LINKS = _parse_user_menu_links(os.getenv('WEBUI_USER_MENU_LINKS', ''))
+
 ####################################
 # WEBUI Identity
 ####################################

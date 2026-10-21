@@ -76,6 +76,7 @@ from open_webui.config import (
 from open_webui.constants import ERROR_MESSAGES, TASKS
 from open_webui.env import (
     WEBUI_BASE_PATH,
+    WEBUI_USER_MENU_LINKS,
     AIOHTTP_CLIENT_SESSION_SSL,
     AUDIT_EXCLUDED_PATHS,
     AUDIT_INCLUDED_PATHS,
@@ -2413,6 +2414,7 @@ async def get_app_config(request: Request):
 
     return {
         **({'onboarding': True} if onboarding else {}),
+        **({'user_menu_links': WEBUI_USER_MENU_LINKS} if user is not None and WEBUI_USER_MENU_LINKS else {}),
         'status': True,
         'name': app.state.WEBUI_NAME,
         'version': VERSION,

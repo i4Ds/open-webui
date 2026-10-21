@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { WEBUI_BASE_URL } from '$lib/constants';
+	import { stripBase } from '$lib/utils/basePath';
 	import { onMount, getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
 	import type { i18n as i18nType } from 'i18next';
@@ -12,7 +14,7 @@
 		workspaceCounts
 	} from '$lib/stores';
 	import { page } from '$app/stores';
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { getModelItems } from '$lib/apis/models';
 	import { searchKnowledgeBases } from '$lib/apis/knowledge';
 	import { getPromptItems } from '$lib/apis/prompts';
@@ -30,16 +32,16 @@
 	let activeWorkspaceSection = '';
 	let visibleActions = [];
 
-	$: if ($page.url.pathname !== lastPath) {
-		lastPath = $page.url.pathname;
+	$: if (stripBase($page.url.pathname) !== lastPath) {
+		lastPath = stripBase($page.url.pathname);
 		workspaceActions.set([]);
 	}
 
-	$: if (loaded && $page.url.pathname.startsWith('/workspace')) {
+	$: if (loaded && stripBase($page.url.pathname).startsWith('/workspace')) {
 		loadWorkspaceCounts();
 	}
 
-	$: activeWorkspaceSection = $page.url.pathname.split('/')[2] ?? '';
+	$: activeWorkspaceSection = stripBase($page.url.pathname).split('/')[2] ?? '';
 	$: visibleActions = $workspaceActions.filter((action) => action.visible ?? true);
 
 	const getCount = (res: any) => res?.total ?? (Array.isArray(res) ? res.length : null);
@@ -79,24 +81,24 @@
 
 	onMount(async () => {
 		if ($user?.role !== 'admin') {
-			if ($page.url.pathname.includes('/models') && !$user?.permissions?.workspace?.models) {
+			if (stripBase($page.url.pathname).includes('/models') && !$user?.permissions?.workspace?.models) {
 				goto('/', { replaceState: true });
 			} else if (
-				$page.url.pathname.includes('/knowledge') &&
+				stripBase($page.url.pathname).includes('/knowledge') &&
 				!$user?.permissions?.workspace?.knowledge
 			) {
 				goto('/', { replaceState: true });
 			} else if (
-				$page.url.pathname.includes('/prompts') &&
+				stripBase($page.url.pathname).includes('/prompts') &&
 				!$user?.permissions?.workspace?.prompts
 			) {
 				goto('/', { replaceState: true });
 			} else if (
-				$page.url.pathname.includes('/tools') &&
+				stripBase($page.url.pathname).includes('/tools') &&
 				(!$config?.features?.enable_tools || !$user?.permissions?.workspace?.tools)
 			) {
 				goto('/', { replaceState: true });
-			} else if ($page.url.pathname.includes('/skills') && !$user?.permissions?.workspace?.skills) {
+			} else if (stripBase($page.url.pathname).includes('/skills') && !$user?.permissions?.workspace?.skills) {
 				goto('/', { replaceState: true });
 			}
 		}
@@ -156,7 +158,7 @@
 								'models'
 									? 'text-gray-900 dark:text-gray-100'
 									: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition select-none"
-								href="/workspace/models"
+								href="{WEBUI_BASE_URL}/workspace/models"
 							>
 								<span>{$i18n.t('Models')}</span>
 								<span class="text-sm opacity-60">
@@ -173,7 +175,7 @@
 								'knowledge'
 									? 'text-gray-900 dark:text-gray-100'
 									: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition select-none"
-								href="/workspace/knowledge"
+								href="{WEBUI_BASE_URL}/workspace/knowledge"
 							>
 								<span>{$i18n.t('Knowledge')}</span>
 								<span class="text-sm opacity-60">
@@ -190,7 +192,7 @@
 								'prompts'
 									? 'text-gray-900 dark:text-gray-100'
 									: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition select-none"
-								href="/workspace/prompts"
+								href="{WEBUI_BASE_URL}/workspace/prompts"
 							>
 								<span>{$i18n.t('Prompts')}</span>
 								<span class="text-sm opacity-60">
@@ -207,7 +209,7 @@
 								'skills'
 									? 'text-gray-900 dark:text-gray-100'
 									: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition select-none"
-								href="/workspace/skills"
+								href="{WEBUI_BASE_URL}/workspace/skills"
 							>
 								<span>{$i18n.t('Skills')}</span>
 								<span class="text-sm opacity-60">
@@ -224,7 +226,7 @@
 								'tools'
 									? 'text-gray-900 dark:text-gray-100'
 									: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition select-none"
-								href="/workspace/tools"
+								href="{WEBUI_BASE_URL}/workspace/tools"
 							>
 								<span>{$i18n.t('Tools')}</span>
 								<span class="text-sm opacity-60">
@@ -246,7 +248,7 @@
 		<div
 			class="pb-1 flex-1 min-w-0 max-h-full overflow-y-auto overflow-x-hidden"
 			class:px-3={!['/workspace/models/create', '/workspace/models/edit'].includes(
-				$page.url.pathname
+				stripBase($page.url.pathname)
 			)}
 			id="workspace-container"
 		>

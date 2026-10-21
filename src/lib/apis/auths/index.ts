@@ -1,3 +1,4 @@
+import { stripBase } from '$lib/utils/basePath';
 import { WEBUI_API_BASE_URL } from '$lib/constants';
 
 export const getAdminDetails = async (token: string) => {
@@ -415,7 +416,7 @@ export const getLogoutRedirectUrl = (redirectUrl?: string | null) => {
 	}
 
 	const url = new URL(redirectUrl, window.location.origin);
-	if (url.origin === window.location.origin && url.pathname === '/auth') {
+	if (url.origin === window.location.origin && stripBase(url.pathname) === '/auth') {
 		url.searchParams.set('state', 'logout');
 		return url.href;
 	}

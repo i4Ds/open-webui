@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { withBase } from '$lib/utils/basePath';
 	import { getBackendConfig } from '$lib/apis';
 	import {
 		getAdminConfig,
@@ -94,7 +95,7 @@
 		});
 		if (res?.sessions_revoked) {
 			localStorage.removeItem('token');
-			window.location.href = '/auth?state=logout&form=signin';
+			window.location.href = withBase('/auth?state=logout&form=signin');
 			return false;
 		}
 		if (res) {

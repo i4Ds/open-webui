@@ -25,7 +25,8 @@ async function loadPyodideAndPackages(packages: string[] = []) {
 	self.result = null;
 
 	self.pyodide = await loadPyodide({
-		indexURL: '/pyodide/',
+		// Worker lives at <base>/_app/immutable/workers/..., pyodide at <base>/pyodide/
+		indexURL: `${self.location.pathname.includes('/_app/') ? self.location.pathname.split('/_app/')[0] : ''}/pyodide/`,
 		stdout: (text) => {
 			console.log('Python output:', text);
 

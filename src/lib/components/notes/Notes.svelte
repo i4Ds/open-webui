@@ -18,7 +18,7 @@
 
 	const i18n = getContext<typeof import('$lib/i18n').default>('i18n');
 
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { WEBUI_NAME, config, user, pinnedNotes, mobile, showSidebar } from '$lib/stores';
 	import {
 		createNewNote,

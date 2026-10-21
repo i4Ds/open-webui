@@ -4,7 +4,7 @@
 
 	const i18n = getContext<any>('i18n');
 
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import VersionDiff from '$lib/components/workspace/common/VersionDiff.svelte';
 	import ToolHistory from './ToolHistory.svelte';
 	import { getToolHistoryDiff } from '$lib/apis/tools';

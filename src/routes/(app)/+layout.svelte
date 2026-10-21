@@ -1,8 +1,9 @@
 <script lang="ts">
+	import { stripBase } from '$lib/utils/basePath';
 	import { toast } from 'svelte-sonner';
 	import { onMount, tick, getContext } from 'svelte';
 
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
 
@@ -213,7 +214,7 @@
 			return;
 		}
 
-		const urlKey = `${$page.url.pathname}${$page.url.search}${$page.url.hash}`;
+		const urlKey = `${stripBase($page.url.pathname)}${$page.url.search}${$page.url.hash}`;
 		if (handledSettingsUrl === urlKey) {
 			return;
 		}
@@ -228,7 +229,7 @@
 		const params = new URLSearchParams($page.url.searchParams);
 		params.delete('settings');
 		const query = params.toString();
-		await goto(`${$page.url.pathname}${query ? `?${query}` : ''}${$page.url.hash}`, {
+		await goto(`${stripBase($page.url.pathname)}${query ? `?${query}` : ''}${$page.url.hash}`, {
 			replaceState: true,
 			noScroll: true,
 			keepFocus: true
@@ -236,7 +237,7 @@
 	};
 
 	const gotoAuth = async () => {
-		const currentUrl = `${$page.url.pathname}${$page.url.search}`;
+		const currentUrl = `${stripBase($page.url.pathname)}${$page.url.search}`;
 		await goto(`/auth?redirect=${encodeURIComponent(currentUrl)}`);
 	};
 

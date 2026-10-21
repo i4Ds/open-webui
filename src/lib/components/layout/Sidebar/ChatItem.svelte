@@ -15,9 +15,11 @@
 </script>
 
 <script lang="ts">
+	import { WEBUI_BASE_URL } from '$lib/constants';
 	import { toast } from 'svelte-sonner';
 	import type { ChatParticipant } from '$lib/apis/folders';
-	import { goto, invalidate, invalidateAll } from '$app/navigation';
+	import { invalidate, invalidateAll } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { onMount, getContext, createEventDispatcher, tick } from 'svelte';
 	import { LinkPreview } from 'bits-ui';
 	import {
@@ -652,7 +654,7 @@
 			{#if $mobile}
 				<a
 					class="flex min-w-0 flex-1 items-center"
-					href="/c/{id}"
+					href="{WEBUI_BASE_URL}/c/{id}"
 					aria-current={id === $chatId ? 'page' : undefined}
 					on:click={selectChatHandler}
 					draggable="false"
@@ -674,7 +676,7 @@
 				>
 					<LinkPreview.Trigger
 						class="flex min-w-0 flex-1 -my-1.5 py-1.5 items-center"
-						href="/c/{id}"
+						href="{WEBUI_BASE_URL}/c/{id}"
 						aria-current={id === $chatId ? 'page' : undefined}
 						onclick={selectChatHandler}
 						ondblclick={renameChatFromDoubleClick}

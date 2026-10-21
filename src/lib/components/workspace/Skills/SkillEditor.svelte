@@ -20,7 +20,8 @@
 	import { slugify, parseFrontmatter, formatSkillName } from '$lib/utils';
 	import Spinner from '$lib/components/common/Spinner.svelte';
 	import { updateSkillAccessGrants } from '$lib/apis/skills';
-	import { goto, beforeNavigate } from '$app/navigation';
+	import { beforeNavigate } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import SkillFiles from './SkillFiles.svelte';
 	import VersionDiff from '../common/VersionDiff.svelte';
 	import ConfirmDialog from '$lib/components/common/ConfirmDialog.svelte';

@@ -24,7 +24,7 @@ from fastapi import (
 )
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from sqlalchemy import text
@@ -75,6 +75,7 @@ from open_webui.config import (
 )
 from open_webui.constants import ERROR_MESSAGES, TASKS
 from open_webui.env import (
+    WEBUI_BASE_PATH,
     AIOHTTP_CLIENT_SESSION_SSL,
     AUDIT_EXCLUDED_PATHS,
     AUDIT_INCLUDED_PATHS,
@@ -250,6 +251,12 @@ from open_webui.utils.headers import get_headers_and_cookies
 from open_webui.utils.json_codec import JSONCodec
 from open_webui.utils.json_response import apply_orjson_http_json
 from open_webui.utils.logger import start_logger
+from open_webui.utils.base_path import (
+    BasePathMiddleware,
+    build_dir_entries,
+    rewrite_html,
+    with_base_path,
+)
 from open_webui.utils.middleware import (
     background_tasks_handler,
     build_chat_response_context,
@@ -324,11 +331,29 @@ class SPAStaticFiles(StaticFiles):
     def file_response(
         self, full_path: str, stat_result: os.stat_result, scope: dict, status_code: int = 200
     ) -> Response:
+        if WEBUI_BASE_PATH and full_path.endswith('.html'):
+            return HTMLResponse(
+                self._base_path_html(full_path, stat_result.st_mtime),
+                status_code=status_code,
+                headers={'Cache-Control': 'no-cache'},
+            )
         response = super().file_response(full_path, stat_result, scope, status_code)
         if full_path.endswith('.html'):
             # Stale cached HTML references chunks from an older build
             response.headers['Cache-Control'] = 'no-cache'
         return response
+
+    _html_cache: dict[str, tuple[float, str]] = {}
+
+    def _base_path_html(self, full_path: str, mtime: float) -> str:
+        # Built HTML points at "/"; serve it pointing at WEBUI_BASE_PATH.
+        cached = self._html_cache.get(full_path)
+        if cached and cached[0] == mtime:
+            return cached[1]
+        with open(full_path, encoding='utf-8') as f:
+            html = rewrite_html(f.read(), WEBUI_BASE_PATH, build_dir_entries(self.directory))
+        self._html_cache[full_path] = (mtime, html)
+        return html
 
 
 class CORSStaticFiles(StaticFiles):
@@ -2763,6 +2788,11 @@ except Exception as e:
         https_only=WEBUI_SESSION_COOKIE_SECURE,
     )
 
+# Added last = outermost: strips an unstripped base prefix before routing and
+# keeps redirects under the base path.
+if WEBUI_BASE_PATH:
+    app.add_middleware(BasePathMiddleware, base=WEBUI_BASE_PATH)
+
 
 async def register_client(request, client_id: str) -> bool:
     if not ENABLE_TOOL_SERVERS:
@@ -2988,7 +3018,7 @@ async def get_manifest_json():
             'name': app.state.WEBUI_NAME,
             'short_name': app.state.WEBUI_NAME,
             'description': f'{app.state.WEBUI_NAME} is an open, extensible, user-friendly interface for AI that adapts to your workflow.',
-            'start_url': '/',
+            'start_url': with_base_path(WEBUI_BASE_PATH, '/'),
             'display': 'standalone',
             'background_color': '#343541',
             'icons': [
@@ -2996,20 +3026,20 @@ async def get_manifest_json():
                 # Do not alter, remove, obscure, or replace it except as LICENSE permits:
                 # https://docs.openwebui.com/license.
                 {
-                    'src': '/static/logo.png',
+                    'src': with_base_path(WEBUI_BASE_PATH, '/static/logo.png'),
                     'type': 'image/png',
                     'sizes': '500x500',
                     'purpose': 'any',
                 },
                 {
-                    'src': '/static/logo.png',
+                    'src': with_base_path(WEBUI_BASE_PATH, '/static/logo.png'),
                     'type': 'image/png',
                     'sizes': '500x500',
                     'purpose': 'maskable',
                 },
             ],
             'share_target': {
-                'action': '/',
+                'action': with_base_path(WEBUI_BASE_PATH, '/'),
                 'method': 'GET',
                 'params': {'text': 'shared'},
             },

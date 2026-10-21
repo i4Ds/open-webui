@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { WEBUI_BASE_URL } from '$lib/constants';
+	import { stripBase } from '$lib/utils/basePath';
 	import { onMount, getContext } from 'svelte';
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 
 	import { WEBUI_NAME, config, mobile, showSettings, showSidebar, user } from '$lib/stores';
 	import { page } from '$app/stores';
@@ -17,7 +19,7 @@
 			await goto('/', { replaceState: true });
 		} else if (
 			!$config?.features?.enable_functions &&
-			$page.url.pathname.includes('/admin/functions')
+			stripBase($page.url.pathname).includes('/admin/functions')
 		) {
 			await goto('/admin', { replaceState: true });
 		}
@@ -70,36 +72,36 @@
 					>
 						<a
 							draggable="false"
-							class="min-w-fit px-1 text-sm {$page.url.pathname.includes('/admin/users')
+							class="min-w-fit px-1 text-sm {stripBase($page.url.pathname).includes('/admin/users')
 								? ''
 								: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition select-none"
-							href="/admin">{$i18n.t('Users')}</a
+							href="{WEBUI_BASE_URL}/admin">{$i18n.t('Users')}</a
 						>
 
 						<a
 							draggable="false"
-							class="min-w-fit px-1 text-sm {$page.url.pathname.includes('/admin/evaluations')
+							class="min-w-fit px-1 text-sm {stripBase($page.url.pathname).includes('/admin/evaluations')
 								? ''
 								: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition select-none"
-							href="/admin/evaluations">{$i18n.t('Evaluations')}</a
+							href="{WEBUI_BASE_URL}/admin/evaluations">{$i18n.t('Evaluations')}</a
 						>
 
 						{#if $config?.features?.enable_functions}
 							<a
 								draggable="false"
-								class="min-w-fit px-1 text-sm {$page.url.pathname.includes('/admin/functions')
+								class="min-w-fit px-1 text-sm {stripBase($page.url.pathname).includes('/admin/functions')
 									? ''
 									: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition select-none"
-								href="/admin/functions">{$i18n.t('Functions')}</a
+								href="{WEBUI_BASE_URL}/admin/functions">{$i18n.t('Functions')}</a
 							>
 						{/if}
 
 						<a
 							draggable="false"
-							class="min-w-fit px-1 text-sm {$page.url.pathname.includes('/admin/settings')
+							class="min-w-fit px-1 text-sm {stripBase($page.url.pathname).includes('/admin/settings')
 								? ''
 								: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition select-none"
-							href="/admin/settings"
+							href="{WEBUI_BASE_URL}/admin/settings"
 							on:click={(event) => {
 								event.preventDefault();
 								showSettings.set('admin:general');

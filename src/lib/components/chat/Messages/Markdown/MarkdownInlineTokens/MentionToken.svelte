@@ -21,7 +21,7 @@
 	import { getContext } from 'svelte';
 	import { browser } from '$app/environment';
 
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { channels, models } from '$lib/stores';
 	import UserStatusLinkPreview from '$lib/components/channel/Messages/Message/UserStatusLinkPreview.svelte';
 

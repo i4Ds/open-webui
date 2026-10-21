@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { stripBase } from '$lib/utils/basePath';
 	import DOMPurify from 'dompurify';
 	import { toast } from 'svelte-sonner';
 
 	import type { Token, Tokens } from 'marked';
 	import { getContext } from 'svelte';
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 
 	const i18n = getContext('i18n');
 	const terminalDocument = getContext<
@@ -46,7 +47,7 @@
 		try {
 			const url = new URL(href, window.location.origin);
 			if (url.origin === window.location.origin) {
-				const match = url.pathname.match(/^\/notes\/([^/]+)$/);
+				const match = stripBase(url.pathname).match(/^\/notes\/([^/]+)$/);
 				if (match) {
 					return match[1];
 				}
@@ -78,15 +79,14 @@
 	const handleLinkClick = (e: MouseEvent, href: string) => {
 		try {
 			const url = new URL(href, window.location.origin);
+			const path = stripBase(url.pathname);
 			// Check if same origin and an in-app route
 			if (
 				url.origin === window.location.origin &&
-				(url.pathname.startsWith('/notes/') ||
-					url.pathname.startsWith('/c/') ||
-					url.pathname.startsWith('/channels/'))
+				(path.startsWith('/notes/') || path.startsWith('/c/') || path.startsWith('/channels/'))
 			) {
 				e.preventDefault();
-				goto(url.pathname + url.search + url.hash);
+				goto(path + url.search + url.hash);
 			}
 		} catch {
 			// Invalid URL, let browser handle it

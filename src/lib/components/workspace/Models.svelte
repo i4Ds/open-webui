@@ -10,7 +10,7 @@
 	const { saveAs } = fileSaver;
 
 	import { onMount, getContext, tick, onDestroy } from 'svelte';
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	const i18n = getContext<any>('i18n');
 	dayjs.extend(relativeTime);
 

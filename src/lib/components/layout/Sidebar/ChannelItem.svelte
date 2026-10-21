@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { stripBase } from '$lib/utils/basePath';
 	import { toast } from 'svelte-sonner';
 	import { onMount, getContext, tick, onDestroy } from 'svelte';
 	const i18n = getContext('i18n');
@@ -7,7 +8,7 @@
 	import { channels, mobile, showSidebar, user } from '$lib/stores';
 	import { getUserActiveStatusById } from '$lib/apis/users';
 	import { updateChannelById, updateChannelMemberActiveStatusById } from '$lib/apis/channels';
-	import { WEBUI_API_BASE_URL } from '$lib/constants';
+	import { WEBUI_API_BASE_URL, WEBUI_BASE_URL } from '$lib/constants';
 
 	import ChannelModal from './ChannelModal.svelte';
 	import ChannelMenu from '$lib/components/channel/ChannelMenu.svelte';
@@ -81,8 +82,8 @@
 	id="sidebar-channel-item"
 	bind:this={itemElement}
 	class:opacity-60={channel?.is_channel_muted}
-	class=" w-full {className} rounded-xl flex relative group hover:bg-gray-100 dark:hover:bg-gray-900 {$page
-		.url.pathname === `/channels/${channel.id}`
+	class=" w-full {className} rounded-xl flex relative group hover:bg-gray-100 dark:hover:bg-gray-900 {stripBase($page
+		.url.pathname) === `/channels/${channel.id}`
 		? 'bg-gray-100 dark:bg-gray-900 selected'
 		: ''} {channel?.type === 'dm' ? 'px-1 py-[0.1875rem]' : 'p-1'}  {channel?.unread_count > 0 &&
 	!channel?.is_channel_muted
@@ -126,7 +127,7 @@
 	{/if}
 	<a
 		class="min-w-0 flex flex-1"
-		href="/channels/{channel.id}"
+		href="{WEBUI_BASE_URL}/channels/{channel.id}"
 		title={channel?.is_channel_muted
 			? $i18n.t('Muted. Direct @mentions can still notify you.')
 			: undefined}

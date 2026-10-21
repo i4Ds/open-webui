@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getContext, onMount, tick } from 'svelte';
 	import { toast } from 'svelte-sonner';
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import VersionDiff from '$lib/components/workspace/common/VersionDiff.svelte';
 	import FunctionHistory from './FunctionHistory.svelte';
 	import { getFunctionHistoryDiff } from '$lib/apis/functions';

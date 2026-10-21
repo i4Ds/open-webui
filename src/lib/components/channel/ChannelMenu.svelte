@@ -2,7 +2,7 @@
 	import { getContext } from 'svelte';
 	import { toast } from 'svelte-sonner';
 	import { channels, config, user } from '$lib/stores';
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { canUseEncryption, enter } from '$lib/encryption/client';
 	import { updateChannelMemberMuteStatusById } from '$lib/apis/channels';
 	import Dropdown from '$lib/components/common/Dropdown.svelte';

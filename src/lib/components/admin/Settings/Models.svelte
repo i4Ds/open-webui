@@ -61,7 +61,7 @@
 	import GlobeAlt from '$lib/components/icons/GlobeAlt.svelte';
 	import LockClosed from '$lib/components/icons/LockClosed.svelte';
 	import { WEBUI_API_BASE_URL } from '$lib/constants';
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 
 	import Dropdown from '$lib/components/common/Dropdown.svelte';
 	import DropdownMenu from '$lib/components/common/DropdownMenu.svelte';

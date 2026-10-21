@@ -2,7 +2,8 @@
 	import { onMount, onDestroy, tick, getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
 	import type { i18n as i18nType } from 'i18next';
-	import { goto, beforeNavigate } from '$app/navigation';
+	import { beforeNavigate } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { toast } from 'svelte-sonner';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
 	import AccessButton from '$lib/components/common/AccessButton.svelte';

@@ -3,7 +3,7 @@
 	import type { Writable } from 'svelte/store';
 	import type { i18n as I18n } from 'i18next';
 
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { page } from '$app/stores';
 
 	import dayjs from '$lib/dayjs';

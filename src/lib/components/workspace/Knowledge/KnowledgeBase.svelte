@@ -9,7 +9,7 @@
 
 	const i18n = getContext<Writable<i18nType>>('i18n');
 
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { page } from '$app/stores';
 	import { config, user, settings } from '$lib/stores';
 

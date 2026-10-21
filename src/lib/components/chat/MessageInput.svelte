@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { stripBase } from '$lib/utils/basePath';
 	import type { TerminalContext } from '$lib/types';
 	import { resolveLocalizedFunction } from '$lib/utils/localizedContent';
 	import { functions as localizedFunctions } from '$lib/stores';
@@ -117,7 +118,7 @@
 	import ValvesModal from '../workspace/common/ValvesModal.svelte';
 	import Note from '../icons/Note.svelte';
 	import AskUserCard from './AskUserCard.svelte';
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import InputModal from '../common/InputModal.svelte';
 	import Skeleton from './Messages/Skeleton.svelte';
 	import Expand from '../icons/Expand.svelte';
@@ -594,7 +595,7 @@
 			await temporaryChatEnabled.set(!$temporaryChatEnabled);
 		}
 
-		if (location.pathname !== '/') {
+		if (stripBase(location.pathname) !== '/') {
 			await goto('/');
 		}
 

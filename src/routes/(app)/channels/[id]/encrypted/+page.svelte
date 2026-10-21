@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getContext, onMount, tick } from 'svelte';
-	import { beforeNavigate, goto } from '$app/navigation';
+	import { beforeNavigate } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { page } from '$app/stores';
 	import { get } from 'svelte/store';
 	import { socket, user, config, showSidebar, channels, settings, mobile } from '$lib/stores';

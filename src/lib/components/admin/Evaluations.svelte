@@ -1,4 +1,6 @@
 <script>
+	import { WEBUI_BASE_URL } from '$lib/constants';
+	import { stripBase } from '$lib/utils/basePath';
 	import { getContext, onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { adminFeedbackCount, adminLeaderboardCount, models as _models } from '$lib/stores';
@@ -12,7 +14,7 @@
 
 	let selectedTab;
 	$: {
-		const pathParts = $page.url.pathname.split('/');
+		const pathParts = stripBase($page.url.pathname).split('/');
 		const tabFromPath = pathParts[pathParts.length - 1];
 		selectedTab = ['leaderboard', 'feedback'].includes(tabFromPath) ? tabFromPath : 'leaderboard';
 	}
@@ -84,7 +86,7 @@
 		>
 			<a
 				id="leaderboard"
-				href="/admin/evaluations/leaderboard"
+				href="{WEBUI_BASE_URL}/admin/evaluations/leaderboard"
 				draggable="false"
 				class="px-0.5 py-1 min-w-fit rounded-lg lg:flex-none flex items-center gap-1.5 text-right transition select-none {selectedTab ===
 				'leaderboard'
@@ -101,7 +103,7 @@
 
 			<a
 				id="feedback"
-				href="/admin/evaluations/feedback"
+				href="{WEBUI_BASE_URL}/admin/evaluations/feedback"
 				draggable="false"
 				class="px-0.5 py-1 min-w-fit rounded-lg lg:flex-none flex items-center gap-1.5 text-right transition select-none {selectedTab ===
 				'feedback'

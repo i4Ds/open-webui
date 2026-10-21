@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { withBase } from '$lib/utils/basePath';
 	import DOMPurify from 'dompurify';
 	import MfaChallengeForm from '$lib/components/auth/MfaChallenge.svelte';
 	import { mfaRequest, type MfaChallenge } from '$lib/apis/auths/mfa';
@@ -9,7 +10,7 @@
 	import { toast } from 'svelte-sonner';
 
 	import { onMount, getContext } from 'svelte';
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { page } from '$app/stores';
 
 	import { getBackendConfig } from '$lib/apis';
@@ -267,7 +268,7 @@
 							onComplete={setSessionUser}
 							onCancel={() => {
 								mfaChallenge = null;
-								window.location.href = '/auth?state=logout&form=signin';
+								window.location.href = withBase('/auth?state=logout&form=signin');
 							}}
 						/>
 					</div>

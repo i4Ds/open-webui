@@ -10,7 +10,8 @@
 	import { toast } from 'svelte-sonner';
 	import { equalEditorJSON } from '$lib/utils/editorJson';
 
-	import { goto, onNavigate } from '$app/navigation';
+	import { onNavigate } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { page } from '$app/stores';
 
 	import dayjs from '$lib/dayjs';

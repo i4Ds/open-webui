@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext, onMount, tick } from 'svelte';
 
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { fade, slide } from 'svelte/transition';
 
 	import { getUsage } from '$lib/apis';
@@ -9,7 +9,7 @@
 
 	import { showSettings, mobile, showSidebar, user, config, settings } from '$lib/stores';
 
-	import { WEBUI_API_BASE_URL } from '$lib/constants';
+	import { WEBUI_API_BASE_URL, WEBUI_BASE_URL } from '$lib/constants';
 
 	import Dropdown from '$lib/components/common/Dropdown.svelte';
 	import DropdownMenu from '$lib/components/common/DropdownMenu.svelte';
@@ -246,7 +246,7 @@
 					class="user-menu-row flex items-center w-full rounded-xl hover:bg-gray-50/60 dark:hover:bg-gray-800/60 transition-colors"
 				>
 					<a
-						href="/workspace"
+						href="{WEBUI_BASE_URL}/workspace"
 						draggable="false"
 						class="flex flex-1 min-w-0 h-[1.6875rem] items-center gap-2 rounded-xl px-2 text-[0.8125rem] cursor-pointer select-none"
 						on:click={async (e) => {
@@ -292,7 +292,7 @@
 					class="user-menu-row flex items-center w-full rounded-xl hover:bg-gray-50/60 dark:hover:bg-gray-800/60 transition-colors"
 				>
 					<a
-						href="/notes"
+						href="{WEBUI_BASE_URL}/notes"
 						draggable="false"
 						class="flex flex-1 min-w-0 h-[1.6875rem] items-center gap-2 rounded-xl px-2 text-[0.8125rem] cursor-pointer select-none"
 						on:click={async (e) => {
@@ -338,7 +338,7 @@
 					class="user-menu-row flex items-center w-full rounded-xl hover:bg-gray-50/60 dark:hover:bg-gray-800/60 transition-colors"
 				>
 					<a
-						href="/calendar"
+						href="{WEBUI_BASE_URL}/calendar"
 						draggable="false"
 						class="flex flex-1 min-w-0 h-[1.6875rem] items-center gap-2 rounded-xl px-2 text-[0.8125rem] cursor-pointer select-none"
 						on:click={async (e) => {
@@ -384,7 +384,7 @@
 					class="user-menu-row flex items-center w-full rounded-xl hover:bg-gray-50/60 dark:hover:bg-gray-800/60 transition-colors"
 				>
 					<a
-						href="/automations"
+						href="{WEBUI_BASE_URL}/automations"
 						draggable="false"
 						class="flex flex-1 min-w-0 h-[1.6875rem] items-center gap-2 rounded-xl px-2 text-[0.8125rem] cursor-pointer select-none"
 						on:click={async (e) => {
@@ -430,7 +430,7 @@
 					class="user-menu-row flex items-center w-full rounded-xl hover:bg-gray-50/60 dark:hover:bg-gray-800/60 transition-colors"
 				>
 					<a
-						href="/playground"
+						href="{WEBUI_BASE_URL}/playground"
 						draggable="false"
 						class="flex flex-1 min-w-0 h-[1.6875rem] items-center gap-2 rounded-xl px-2 text-[0.8125rem] cursor-pointer select-none"
 						on:click={async (e) => {
@@ -536,7 +536,7 @@
 
 			{#if role === 'admin'}
 				<a
-					href="/admin"
+					href="{WEBUI_BASE_URL}/admin"
 					draggable="false"
 					class="flex h-[1.6875rem] items-center gap-2 rounded-xl px-2 text-[0.8125rem] w-full hover:bg-gray-50/60 dark:hover:bg-gray-800/60 transition cursor-pointer select-none"
 					on:click={async (e) => {

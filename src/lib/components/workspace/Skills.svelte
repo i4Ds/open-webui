@@ -21,7 +21,7 @@
 		workspaceActions,
 		workspaceCounts
 	} from '$lib/stores';
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import {
 		getSkills,
 		getSkillItems,

@@ -1,3 +1,4 @@
+import { withBase } from '$lib/utils/basePath';
 type MessageListener = (event: MessageEvent) => void;
 type ErrorListener = (event: Event) => void;
 type QueuedMessage = { message: unknown; transfer: Transferable[] };
@@ -189,7 +190,7 @@ const sandboxScript = String.raw`
 `;
 
 // indexURL must be absolute because about:srcdoc can't be a base URL
-const pyodideIndexURL = `${globalThis.location?.origin ?? ''}/pyodide/`;
+const pyodideIndexURL = `${globalThis.location?.origin ?? ''}${withBase('/pyodide/')}`;
 
 const sandboxHtml = `<!doctype html><html><head><meta charset="utf-8"><script>window.__PYODIDE_INDEX_URL__=${JSON.stringify(pyodideIndexURL)}</script></head><body><script src="${pyodideIndexURL}pyodide.js"></script><script>${sandboxScript}</script></body></html>`;
 

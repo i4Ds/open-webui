@@ -2,7 +2,7 @@
 	import { formatSchedule } from '$lib/utils/schedule';
 	import { onMount, getContext } from 'svelte';
 	import { toast } from 'svelte-sonner';
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 
 	import dayjs from 'dayjs';
 	import localizedFormat from 'dayjs/plugin/localizedFormat';

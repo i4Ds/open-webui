@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getContext, onMount, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 
 	import { config, mobile, showSidebar, user } from '$lib/stores';
 	import { getAutomationItems } from '$lib/apis/automations';

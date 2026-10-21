@@ -947,6 +947,15 @@ if LICENSE_PUBLIC_KEY:
 
 
 ####################################
+# WEBUI Base Path
+####################################
+
+# Serve the UI under a sub path behind a reverse proxy, e.g. "/planet-express".
+# The proxy may strip the prefix or pass it through; both work. Empty = root.
+WEBUI_BASE_PATH = os.getenv('WEBUI_BASE_PATH', '').strip().strip('/')
+WEBUI_BASE_PATH = f'/{WEBUI_BASE_PATH}' if WEBUI_BASE_PATH else ''
+
+####################################
 # WEBUI Identity
 ####################################
 

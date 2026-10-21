@@ -2,7 +2,7 @@
 	import { toast } from 'svelte-sonner';
 
 	import { onDestroy, onMount, tick } from 'svelte';
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { page } from '$app/stores';
 	import { v4 as uuidv4 } from 'uuid';
 	import type { Socket } from 'socket.io-client';

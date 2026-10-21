@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { withBase } from '$lib/utils/basePath';
 	import { onMount, getContext } from 'svelte';
 	import { mfaRequest } from '$lib/apis/auths/mfa';
 	import type { MfaManagementFlow } from '$lib/components/auth/MfaManagement.svelte';
@@ -23,7 +24,7 @@
 	});
 	const signIn = () => {
 		localStorage.removeItem('token');
-		window.location.href = '/auth?state=logout&form=signin';
+		window.location.href = withBase('/auth?state=logout&form=signin');
 	};
 	const manage = async (replace: boolean) => {
 		if (busy) return;

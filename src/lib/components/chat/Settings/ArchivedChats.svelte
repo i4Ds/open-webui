@@ -8,7 +8,7 @@
 	import localizedFormat from 'dayjs/plugin/localizedFormat';
 	import { getContext, onMount } from 'svelte';
 	import type { Writable } from 'svelte/store';
-	import { goto } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { toast } from 'svelte-sonner';
 
 	import {

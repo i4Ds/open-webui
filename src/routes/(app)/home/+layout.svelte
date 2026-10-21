@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { WEBUI_BASE_URL } from '$lib/constants';
+	import { stripBase } from '$lib/utils/basePath';
 	import { onMount, getContext } from 'svelte';
 	import { WEBUI_NAME, showSidebar, functions, mobile } from '$lib/stores';
 	import { page } from '$app/stores';
@@ -52,17 +54,17 @@
 					class="flex gap-0.5 md:gap-1 scrollbar-none overflow-x-auto w-fit text-center text-sm font-normal rounded-full bg-transparent pt-1"
 				>
 					<a
-						class="min-w-fit p-1.5 {$page.url.pathname.includes('/home/notes')
+						class="min-w-fit p-1.5 {stripBase($page.url.pathname).includes('/home/notes')
 							? ''
 							: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition"
-						href="/playground/notes">{$i18n.t('Notes')}</a
+						href="{WEBUI_BASE_URL}/playground/notes">{$i18n.t('Notes')}</a
 					>
 
 					<a
-						class="min-w-fit p-1.5 {$page.url.pathname.includes('/playground/calendar')
+						class="min-w-fit p-1.5 {stripBase($page.url.pathname).includes('/playground/calendar')
 							? ''
 							: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'} transition"
-						href="/playground/completions">{$i18n.t('Calendar')}</a
+						href="{WEBUI_BASE_URL}/playground/completions">{$i18n.t('Calendar')}</a
 					>
 				</div>
 			</div>

@@ -2,7 +2,8 @@
 	import ModelSettingsLabel from './ModelSettingsLabel.svelte';
 	import { toast } from 'svelte-sonner';
 	import { v4 as uuidv4 } from 'uuid';
-	import { beforeNavigate, goto } from '$app/navigation';
+	import { beforeNavigate } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { getModels } from '$lib/apis';
 	import ModelHistory from './ModelHistory.svelte';
 	import ConfirmDialog from '$lib/components/common/ConfirmDialog.svelte';

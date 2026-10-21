@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { stripBase } from '$lib/utils/basePath';
 	import type { TerminalContext } from '$lib/types';
 	import { v4 as uuidv4 } from 'uuid';
 	import { toast } from 'svelte-sonner';
@@ -7,7 +8,8 @@
 	import { fade } from 'svelte/transition';
 	const i18n: Writable<i18nType> = getContext('i18n');
 
-	import { goto, beforeNavigate } from '$app/navigation';
+	import { beforeNavigate } from '$app/navigation';
+	import { goto } from '$lib/utils/navigation';
 	import { page } from '$app/stores';
 
 	import { get, type Unsubscriber, type Writable } from 'svelte/store';
@@ -1935,7 +1937,7 @@
 		}
 
 		const pageSubscribe = page.subscribe(async (p) => {
-			if (p.url.pathname === '/' || p.url.pathname.startsWith('/folders/')) {
+			if (stripBase(p.url.pathname) === '/' || stripBase(p.url.pathname).startsWith('/folders/')) {
 				await tick();
 				initNewChat();
 			}
@@ -2744,7 +2746,7 @@
 		await showCallOverlay.set(false);
 		await showArtifacts.set(false);
 
-		if (!embedded && $page.url.pathname.includes('/c/')) {
+		if (!embedded && stripBase($page.url.pathname).includes('/c/')) {
 			window.history.replaceState(window.history.state, '', `/`);
 		}
 

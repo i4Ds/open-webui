@@ -87,6 +87,15 @@ export const installBasePathShims = () => {
 		} as typeof EventSource;
 	}
 
+	// Address-bar updates outside the router (upstream does
+	// history.replaceState(state, '', `/c/${id}`) after the first message):
+	// without the base the page keeps working, but a reload 404s.
+	for (const method of ['pushState', 'replaceState'] as const) {
+		const original = history[method].bind(history);
+		history[method] = (data: any, unused: string, url?: string | URL | null) =>
+			original(data, unused, typeof url === 'string' ? withBase(url) : url);
+	}
+
 	const fixTree = (node: Node) => {
 		if (!(node instanceof Element)) return;
 		fixElement(node);
